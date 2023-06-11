@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shared Note</title>
+</head>
+<body>
+  <!-- Header -->
+  <div th:insert="~{header :: header}"></div>
+
+  <!-- Card -->
+  <div class="d-flex justify-content-between p-4">
+    <div class="card w-25 p-1 m-2 shadow">
+      <div class="card-body">
+        <h5 class="card-title" th:text="${information.getTitle()}"/>
+        <h6 class="card-subtitle mb-2 text-muted" th:text="${information.getCategory().getName()}" />
+        <p class="card-text" th:text="${information.getContent()}" />
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <meta charset="UTF-8">
+  <title>Mewocz Store Everything</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<div class="row">
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <h2 class="mt-4">Add category</h2>
+    <hr>
+    <form th:action="@{/category/saveCategory}"
+          th:object="${category}" method="POST"
+          class="d-flex flex-column justify-content-center align-items-center">
+      <input type="hidden" th:field="*{id}">
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" th:field="*{name}" id="category"
+               class="form-control" placeholder="Category Name">
+
+        <div th:if="${#fields.hasErrors('name')}" class="text-danger">
+          <ul>
+            <li th:each="err : ${#fields.errors('name')}" th:text="'Name - ' + ${err}" />
+          </ul>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Save</button>
+    </form>
+
+    <a th:href="@{/info/addInfo}">Back to adding</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <meta charset="UTF-8">
+  <title>Mewocz Store Everything</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<div class="container">
+  <h3 class="mt-4">Admin Panel</h3>
+  <hr>
+
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>Login</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Age</th>
+      <th>Roles</th>
+      <th>Action</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="tempUser : ${users}">
+
+      <td class="align-middle" th:text="${tempUser.login}" />
+      <td class="align-middle" th:text="${tempUser.firstName}" />
+      <td class="align-middle" th:text="${tempUser.lastName}" />
+      <td class="align-middle" th:text="${tempUser.age}" />
+      <td class="align-middle" th:text="${tempUser.roles}" />
+
+      <td class="align-middle">
+        <a th:href="@{/admin/showFormForUpdate/{userId}(userId=${tempUser.id})}"
+           class="btn btn-primary btn-sm">
+          Update
+        </a>
+
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>

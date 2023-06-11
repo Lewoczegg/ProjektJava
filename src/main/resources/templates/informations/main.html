@@ -1,0 +1,119 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Mewocz Store Everything</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div th:insert="~{header :: header}"></div>
+    <div class="row">
+        <div class="col col-2 d-flex flex-column p-4">
+            <form th:action="@{/info/addInfo}" method="get">
+                <button type="submit" class="btn btn-primary" >
+                    Add New Note
+                </button>
+            </form>
+
+            <div class="dropdown-divider"></div>
+            <form th:action="@{/info/}">
+                <div class="form-group">
+                    <label for="sortField">Field:</label>
+                    <select id="sortField" class="form-control" th:name="sortField">
+                        <option value="title" th:selected="${sortField == 'title'}">Title</option>
+                        <option value="creationDate" th:selected="${sortField == 'creationDate'}">Creation Date</option>
+                        <option value="category.name" th:selected="${sortField == 'category.name'}">Category Name</option>
+                        <option value="category" th:selected="${sortField == 'category'}">Category Popularity</option>
+                    </select>
+                </div>
+            <div class="form-group">
+                <label for="sortDirection">Direction:</label>
+                <select id="sortDirection" class="form-control" th:name="sortDirection">
+                    <option value="asc" th:selected="${sortDirection == 'asc'}">Ascending</option>
+                    <option value="desc" th:selected="${sortDirection == 'desc'}">Descending</option>
+                </select>
+            </div>
+            <button id="SortSubmit" type="submit" class="btn btn-primary mt-2">Sort</button>
+            </form>
+            <div class="dropdown-divider"></div>
+            <form th:action="@{/info/}">
+                <div class="form-group">
+                    <label for="filterDateStart">Start:</label>
+                    <input type="date" id="filterDateStart" class="form-control" th:name="filterDateStart">
+                </div>
+                <div class="form-group">
+                    <label for="filterDateEnd">End:</label>
+                    <input type="date" id="filterDateEnd" class="form-control" th:name="filterDateEnd">
+                </div>
+                <button id="filterSubmit" type="submit" class="btn btn-primary mt-2">Filter</button>
+            </form>
+        </div>
+
+        <div class="col">
+            <h2 class="text-center mt-4">Your Notes</h2>
+    <!-- Cards Container -->
+        <div class="d-flex justify-content-center p-4 flex-wrap">
+            <div class="card col-sm-6 col-lg-3 p-1 m-1 shadow" th:each="information : ${informations}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${information.getTitle()}"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${information.getCategory().getName()}"></h6>
+                    <p class="card-text" th:text="${information.getContent()}"></p>
+                    <p th:text="${information.getReminderDate()}"></p>
+                    <a th:if="${information.getLink() != ''}" th:href="${information.getLink()}" th:text="${information.getLink()}"></a>
+
+                    <form th:action="@{/info/updateInfo/{informationId}(informationId=${information.getId()})}">
+                        <button class="btn btn-primary editButton">Edit</button>
+                    </form>
+                    <div class="d-flex">
+                        <form th:action="@{/info/shareForm/{informationId}(informationId=${information.getId()})}">
+                            <button class="btn btn-primary editButton">Share To User</button>
+                        </form>
+
+                        <form th:action="@{/info/shareLink/{informationId}(informationId=${information.getId()})}" class="mx-4">
+                            <button class="btn btn-primary editButton">Share Link</button>
+                        </form>
+                    </div>
+                    <th:block th:if="${information.getUuid() != null}">
+                        <p>Link to note: <a th:href="'http://localhost:8080/info/shared/' + ${information.getUuid()}" th:text="'http://localhost:8080/info/shared/' + ${information.getUuid()}"></a></p>
+                    </th:block>
+                </div>
+
+                <span class="deleteButton" ><a th:href="@{/info/deleteInfo/{informationId}(informationId=${information.getId()})}">&times;</a></span>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    .deleteButton{
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        border-radius: 50%;
+        transition: all 0.2s ease-in;
+        text-align: center;
+        background-color: transparent;
+        line-height: 1.25;
+    }
+    .deleteButton a {
+        text-decoration: none;
+    }
+    .deleteButton:hover {
+        opacity: 0.7;
+        background-color: lightgray;
+    }
+
+</style>
